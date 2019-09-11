@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * @Description: TODO
+ * @Description: TODO 数据对象模型 与mysql中表一一对应
  * @Author: wanghailin
  * @Date: 2019/9/9
  */

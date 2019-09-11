@@ -25,7 +25,7 @@ import java.util.Random;
  */
 @Controller("user")
 @RequestMapping("/user")
-@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")//跨域请求
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")//跨域请求 保证session发挥作用
 public class UserController extends BaseController {
 
     @Autowired
@@ -36,7 +36,8 @@ public class UserController extends BaseController {
     private HttpServletRequest httpServletRequest;//HttpServletRequest对象代表客户端的请求
 
     //用户登录接口
-    @RequestMapping(value = "login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @PostMapping(value = "login",consumes = {CONTENT_TYPE_FORMED})
+    //@RequestMapping(value = "login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType login(@RequestParam(name = "telphone")String telphone,
                                   @RequestParam(name = "password")String password) throws BussinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -60,7 +61,8 @@ public class UserController extends BaseController {
     }
 
     //用户注册接口
-    @RequestMapping(value = "register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @PostMapping(value = "register",consumes = {CONTENT_TYPE_FORMED})
+    //@RequestMapping(value = "register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType register(@RequestParam(name = "telphone")String telphone,
                                      @RequestParam(name = "otpCode")String otpCode,
@@ -88,7 +90,8 @@ public class UserController extends BaseController {
     }
 
     //用户获取otp短信接口
-    @RequestMapping(value = "getotp", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @PostMapping(value = "getotp",consumes = {CONTENT_TYPE_FORMED})
+    //@RequestMapping(value = "getotp", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getOtp(@RequestParam(name = "telphone")String telphone){
         //需要按照一定的规则生成otp验证码
@@ -108,7 +111,8 @@ public class UserController extends BaseController {
         return CommonReturnType.create(null);
     }
 
-    @RequestMapping("/get")
+    @GetMapping(value = "/get")
+    //@RequestMapping("/get")
     @ResponseBody
     //调用service服务获取对应id对象返回给前端
     public CommonReturnType getUser(@RequestParam(name = "id") Integer id) throws BussinessException {

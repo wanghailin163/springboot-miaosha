@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @Description: TODO
+ * @Description: TODO 这是业务的核心模型，与数据库中的模型不是一一对应的，这里是数据库中user_info和user_password分离，但是业务里面要合并成一个模型
  * @Author: wanghailin
  * @Date: 2019/9/9
  */
