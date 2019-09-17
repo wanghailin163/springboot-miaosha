@@ -1,17 +1,17 @@
 server:
-  #springbootÆô¶¯¶Ë¿Ú
+  #springbootå¯åŠ¨ç«¯å£
   port: 8080
 spring:
   main:
-    allow-bean-definition-overriding: true #µ±Óöµ½Í¬ÑùÃû×ÖµÄÊ±ºò,ÊÇ·ñÔÊĞí¸²¸Ç×¢²á
+    allow-bean-definition-overriding: true #å½“é‡åˆ°åŒæ ·åå­—çš„æ—¶å€™,æ˜¯å¦å…è®¸è¦†ç›–æ³¨å†Œ
   application:
     name: miaosha
   datasource:
-    #Êı¾İ¿âÁ¬½Ó
+    #æ•°æ®åº“è¿æ¥
     url: jdbc:mysql://service-mysql:3306/miaosha?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: root
-    #Ê¹ÓÃdruidÊı¾İÔ´
+    password: 123456
+    #ä½¿ç”¨druidæ•°æ®æº
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   jpa:
@@ -21,12 +21,12 @@ spring:
           auto: update
     show-sql: true
 
-  #ÅäÖÃspringboot¶ÔredisµÄÒÀÀµ
+  #é…ç½®springbootå¯¹redisçš„ä¾èµ–
   redis:
     host: 192.168.48.128
     port: 6379
     database: 10
-    #ÉèÖÃjedisÁ¬½Ó³Ø
+    #è®¾ç½®jedisè¿æ¥æ± 
     jedis:
       pool:
         max-active: 50
