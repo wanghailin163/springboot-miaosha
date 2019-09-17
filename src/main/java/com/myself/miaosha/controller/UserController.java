@@ -111,11 +111,11 @@ public class UserController extends BaseController {
         return CommonReturnType.create(null);
     }
 
-    @GetMapping(value = "/get")
+    @GetMapping(value = "get")
     //@RequestMapping("/get")
     @ResponseBody
     //调用service服务获取对应id对象返回给前端
-    public CommonReturnType getUser(@RequestParam(name = "id") Integer id) throws BussinessException {
+    public CommonReturnType getUser(@RequestParam(name = "id", required = false) Integer id) throws BussinessException {
         UserModel userModel = userService.getUserById(id);
 
         //若获取的对应用户信息不存在，抛出异常
