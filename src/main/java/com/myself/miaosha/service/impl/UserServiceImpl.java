@@ -51,13 +51,6 @@ public class UserServiceImpl implements UserService {
         if(userModel==null){
             throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        //判空
-        /*if(StringUtils.isEmpty(userModel.getName())
-        ||userModel.getGender()==null
-        ||userModel.getAge()==null
-        ||StringUtils.isEmpty(userModel.getTelphone())){
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
-        }*/
         //优化校验
         ValidationResult result = validator.validate(userModel);
         if(result.isHasErrors()){
