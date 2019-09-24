@@ -9,7 +9,7 @@ import com.myself.miaosha.service.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 import javax.servlet.http.HttpServletRequest;
@@ -37,12 +37,12 @@ public class UserController extends BaseController {
 
     //用户登录接口
     @PostMapping(value = "login",consumes = {CONTENT_TYPE_FORMED})
-    public CommonReturnType login(@RequestParam(name = "telphone")String telphone,
-                                  @RequestParam(name = "password")String password) throws BussinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public CommonReturnType login(@RequestParam(name = "telphone",required=false)String telphone,
+                                  @RequestParam(name = "password",required=false)String password) throws BussinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //入参校验（手机号密码不能为空）
         if (org.apache.commons.lang3.StringUtils.isEmpty(telphone)
                 || org.apache.commons.lang3.StringUtils.isEmpty(password)){
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "不能为空");
+            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"电话号码或则密码不能为空");
         }
 
         //用户登录服务，校验用户登录是否合法。将手机号和加密后的密码传到Service层
@@ -54,8 +54,10 @@ public class UserController extends BaseController {
         //将userModel放到对应的session里
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
 
+        UserVO userVO = convertFromModel(userModel);
+
         //返回前端一个正确的信息(通用对象）
-        return CommonReturnType.create(null);//success
+        return CommonReturnType.create(userVO);//success
     }
 
     //用户注册接口
@@ -81,7 +83,12 @@ public class UserController extends BaseController {
         userModel.setRegisterMode("byphone");
         userModel.setEncrptPassword(this.EncodeByMD5(password));//将密码加密存入数据库
 
-        userService.register(userModel);
+        try{
+            userService.register(userModel);
+        }catch (DataIntegrityViolationException ex){
+            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "手机号已注册");
+        }
+
         return CommonReturnType.create(null);
     }
 
@@ -90,8 +97,8 @@ public class UserController extends BaseController {
     public CommonReturnType getOtp(@RequestParam(name = "telphone")String telphone){
         //需要按照一定的规则生成otp验证码
         Random random = new Random();
-        int randomInt = random.nextInt(99999);//此时随机数取值[0,99999)
-        randomInt += 10000;
+        int randomInt = random.nextInt(89999);
+        randomInt += 10000;//此时随机数取值[0,99999)
         String otpCode = String.valueOf(randomInt);
 
 
@@ -111,12 +118,9 @@ public class UserController extends BaseController {
         UserModel userModel = userService.getUserById(id);
 
         //若获取的对应用户信息不存在，抛出异常
-        if (userModel == null){
+        if (userModel == null) {
             throw new BussinessException(EmBusinessError.USER_NOT_EXIST);
         }
-        //抛出errCode10002,
-        userModel=null;
-        userModel.setEncrptPassword("1");
 
         //将核心领域模型用户对象转化为可供UI使用的viewobject，减少password等字段
         UserVO userVO = convertFromModel(userModel);

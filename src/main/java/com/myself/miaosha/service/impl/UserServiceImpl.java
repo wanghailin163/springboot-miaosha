@@ -13,6 +13,7 @@ import com.myself.miaosha.validator.ValidatorImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)//当遇到Exception异常以及子类异常时 回滚事务
     public void register(UserModel userModel) throws BussinessException {
         //校验
         if(userModel==null){
@@ -57,12 +58,10 @@ public class UserServiceImpl implements UserService {
             throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, result.getErrMsg());
         }
         UserDO userDO = convertFromModel(userModel);
-        //手机号重复注册发生异常
-        try{
-            userDORepository.save(userDO);
-        }catch(DuplicateKeyException ex){
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "手机号已注册");
-        }
+
+        //手机号重复注册发生异常,将该异常抛在controller层
+        userDORepository.save(userDO);
+
         userModel.setId(userDO.getId());
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDORepository.save(userPasswordDO);

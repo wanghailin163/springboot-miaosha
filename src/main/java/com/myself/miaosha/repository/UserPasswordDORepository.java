@@ -18,14 +18,6 @@ import org.springframework.stereotype.Repository;
 public interface UserPasswordDORepository extends JpaRepository<UserPasswordDO, Integer> {
 
 
-    /*void deleteById(Integer id);
-
-    int insert(UserPasswordDO record);
-
-    int insertSelective(UserPasswordDO record);*/
-
-    /*UserPasswordDO findById(Integer id);*/
-
     UserPasswordDO findByUserId(Integer userId);
 
     @Modifying

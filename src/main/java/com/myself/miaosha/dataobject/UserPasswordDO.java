@@ -18,10 +18,10 @@ public class UserPasswordDO {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id",unique =true,nullable = false)
     private Integer userId;
 
-    @Column(name = "encrpt_password")
+    @Column(name = "encrpt_password",nullable = false,length = 255)
     private String encrptPassword;
 
 }

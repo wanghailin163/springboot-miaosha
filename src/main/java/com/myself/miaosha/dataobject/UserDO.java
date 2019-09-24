@@ -1,8 +1,6 @@
 package com.myself.miaosha.dataobject;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import javax.persistence.*;
 
 /**
@@ -19,22 +17,22 @@ public class UserDO {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name",nullable = false,length = 20)
     private String name;
 
-    @Column(name = "gender")
+    @Column(name = "gender",nullable = false)
     private Byte gender;
 
-    @Column(name = "age")
+    @Column(name = "age",nullable = false)
     private Integer age;
 
-    @Column(name = "telphone")
+    @Column(name = "telphone",unique =true,nullable = false,length = 20)//telphone是唯一
     private String telphone;
 
-    @Column(name = "register_mode")
+    @Column(name = "register_mode",nullable = false,length = 10)
     private String registerMode;
 
-    @Column(name = "third_party_id")
+    @Column(name = "third_party_id",length = 30)
     private String thirdPartyId;
 
 }

@@ -21,6 +21,10 @@ spring:
         hbm2ddl:
           auto: update
     show-sql: true
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
 
   #配置springboot对redis的依赖
   redis:
